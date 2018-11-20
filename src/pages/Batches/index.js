@@ -1,0 +1,1 @@
+export {default} from './Batches.page.js';

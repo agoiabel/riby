@@ -1,0 +1,29 @@
+.formGroup {
+	margin-bottom: 25px;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+
+	/* position: relative; */
+}
+.formControl {
+	padding: 20px 20px;
+	width: 100%;
+	font-size: 15px;
+	border-radius: 5px;
+	color: #464a4c;
+	border: 1px solid #cecece;
+}
+.formError {
+	border: 1px solid red;
+}
+
+.hint {
+	/* position: absolute;
+	padding: 25px 25px;
+	border: 1px solid green;
+	border-radius: 10px;
+ */
+	/* right: -50%;
+	bottom: -12px; */
+}

@@ -1,0 +1,15 @@
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.formGroup {
+	margin-bottom: 15px;
+}
+.formControl {
+	border: 1px solid #24297A;
+	padding: 15px 15px;
+	width: 100%;
+	font-size: 15px;
+	border-radius: 5px;
+}

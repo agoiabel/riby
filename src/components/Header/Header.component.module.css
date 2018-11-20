@@ -1,0 +1,57 @@
+.headerContainer {
+    background: rgba(46,109,164);
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(46,109,164);
+}
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;    
+}
+.logoNav {
+    display: flex;
+    align-items: center;
+}
+.logo img {
+    width: 50%;
+}
+
+.navItems {
+    display: flex;
+}
+.navItem a {
+    opacity: 0.6;
+    font-size: 16px;
+    cursor: pointer;
+
+    color: #FFF;
+    margin-right: 25px;   
+    letter-spacing: 1.9px;
+    text-transform: uppercase;
+
+    transition: all 0.3s ease 0s;
+}
+.navItem a:hover {
+  font-size: 18px;
+  opacity: 1;
+}
+.account {
+    padding: 15px 15px;
+    border: 2px solid #FFF;
+    border-radius: 50%;
+    color: #FFF;
+    font-size: 16px;
+
+    opacity: 0.6;
+}
+.account:hover {
+    opacity: 1;
+}
+.active {
+    color: #FFF;
+}

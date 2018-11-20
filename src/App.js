@@ -1,26 +1,31 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Auth from './pages/Auth';
+import Batch from './pages/Batch';
+import Batches from './pages/Batches';
+import Dashboard from './pages/Dashboard';
+import ResetPassword from './pages/ResetPassword';
+import ForgotPassword from './pages/ForgotPassword';
+import {Route, Switch, Redirect} from 'react-router-dom';
+import ModalManager from './components/Modal/ModalManager.component';
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <React.Fragment>
+
+        <ModalManager />
+
+        <Switch>
+          <Route path="/" exact component={Auth} />
+          <Route path="/batches" exact component={Batches} />
+          <Route path="/dashboard" exact component={Dashboard} />
+          <Route path="/batch/:batchId" exact component={Batch} />
+          <Route path="/resetPassword" exact component={ResetPassword} />
+          <Route path="/forgotPassword" exact component={ForgotPassword} />          
+          <Redirect to="/" />
+        </Switch>
+        
+      </React.Fragment>
     );
   }
 }
