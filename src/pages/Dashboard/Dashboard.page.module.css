@@ -1,8 +1,8 @@
 .dashboard {
     width: 90%;
-    display: flex;
+    /* display: flex; */
     margin: 25px auto;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 .sidebar {
     width: 22%; 
@@ -13,7 +13,7 @@
     border-radius: 6px;
 }
 .content {
-    width: 76%;
+    width: 100%;
     background: #FFF;
     padding: 45px 25px 25px 25px;
     border-radius: 6px;
@@ -77,10 +77,10 @@
 @media screen and (max-width: 1300px) {
     .dashboard {
         width: 90%;
-        display: flex;
+        /* display: flex; */
         margin: 25px auto;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        /* justify-content: space-between; */
+        /* flex-wrap: wrap; */
     }
     .sidebar {
         width: 100%;
@@ -88,6 +88,9 @@
     }
     .content {
         width: 100%;
+    }
+    .stat {
+        width: 45%;
     }
    
 }

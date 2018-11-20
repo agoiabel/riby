@@ -18,9 +18,9 @@ const Header = props => {
 							<div className={styles.navItem}>
 								<Link to={{ pathname: '/batches' }}>Batches</Link>
 							</div>
-							<div className={styles.navItem}>
+							{/* <div className={styles.navItem}>
 								<a>Verifiers</a>
-							</div>
+							</div> */}
 						</div>
 
 					</div>
