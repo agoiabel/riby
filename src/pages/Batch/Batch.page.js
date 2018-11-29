@@ -7,194 +7,35 @@ import Header from '../../components/Header';
 import Breadcrumb from '../../components/Breadcrumb';
 import CustomButton from '../../components/CustomButton';
 
+import { get_batch } from './Batch.page.action';
+
 import { ENUMERATOR } from '../../components/Modal/index';
 import { openModal } from '../../components/Modal/Modal.action';
 
 
 class Batch extends React.Component {
 
-	state = {
-		enumerators: [
-			{
-				id: 1,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 2,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 3,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 4,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 5,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 6,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 7,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 8,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 9,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 10,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 11,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 12,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 13,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-			{
-				id: 14,
-				sn: 'MOD-2309399939',
-				firstname: 'Akin',
-				lastname: 'Olu',
-				gender: 'Male',
-				phone: '08114247689',
-				type: 'Food Stuff Vendor',
-				state: 'Anambra',
-				lga: 'Akwa South',
-				action: 'info',
-			},
-		]
-	}
-
 	startVerificationFor = batch => {
 		console.dir(batch);
 	}
 
+
+	componentDidMount() {
+		console.dir(this.props.batch);
+		this.props.get_batch(this.props.match.params.batchId);
+	}
+
+
 	makeDecisionOn = enumerator => {
-		this.props.openModal(ENUMERATOR, enumerator.id);
-
-
 		
+		// window.scrollTop = 0;
+		window.scrollTo({
+			top: 0,
+			left: 0,
+			behavior: 'smooth'
+		});
+
+		this.props.openModal(ENUMERATOR, enumerator.id);
 		// swal({
 		// 	content: <Enumerator  />,
 		// 	buttons: false
@@ -202,23 +43,57 @@ class Batch extends React.Component {
 	}
 
 	render() {
-		
-		let enumerators = this.state.enumerators.map(enumerator => (
-			<tr key={enumerator.id}>
-				<td>{enumerator.id}</td>
-				<td>{enumerator.sn}</td>
-				<td>{enumerator.firstname}</td>
-				<td>{enumerator.lastname}</td>
-				<td>{enumerator.gender}</td>
-				<td>{enumerator.phone}</td>
-				<td>{enumerator.type}</td>
-				<td>{enumerator.state}</td>
-				<td>{enumerator.lga}</td>
-				<td onClick={() => this.makeDecisionOn(enumerator)}>
-					<i className="fa fa-folder" aria-hidden="true"></i>
-				</td>
-			</tr>
-		));
+
+
+		let candidates = (
+			<div className={styles.showLoading}>
+				Show Loading
+			</div>
+		);
+
+
+		if (this.props.candidates.length) {
+			candidates = (
+				<table className={styles.table}>
+					<thead>
+						<tr>
+							<th>S/N</th>
+							<th>Tradermoni ID</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Gender</th>
+							<th>Phone No.</th>
+							<th>Smile Status</th>
+							<th>Trade Type</th>
+							<th>State</th>
+							<th>LGA</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{this.props.candidates.map(candidate => (
+
+							<tr key={candidate.id}>
+								<td>{candidate.id}</td>
+								<td>{candidate.trademoni_id}</td>
+								<td>{candidate.firstname}</td>
+								<td>{candidate.lastname}</td>
+								<td>{candidate.gender}</td>
+								<td>{candidate.phone}</td>
+								<td>{candidate.smile_reference}</td>
+								<td>{candidate.tradetype}</td>
+								<td>{candidate.state}</td>
+								<td>{candidate.lga}</td>
+								<td onClick={() => this.makeDecisionOn(candidate)}>
+									<i className="fa fa-folder" aria-hidden="true"></i>
+								</td>
+							</tr>
+
+						))}
+					</tbody>
+				</table>
+			);
+		}
 
 		return (
 			<div>
@@ -233,14 +108,13 @@ class Batch extends React.Component {
 
 				<div className={styles.container}>
 					<div className={styles.agentMembers}>
-						
 						<div className={styles.agent}>
 							<div className={styles.image}>
 								<img src={require('../../assets/images/profile_avatar.png')} />
 							</div>
 							<div className={styles.details}>
 
-								
+
 								<div className={styles.detail}>
 									<div className={styles.agent_name}>Agoi Abel</div>
 								</div>
@@ -270,32 +144,10 @@ class Batch extends React.Component {
 							</div>
 						</div>
 
-						
+
 						<div className={styles.members}>
-							<table className={styles.table}>
-								<thead>
-									<tr>
-										<th>S/N</th>
-										<th>Tradermoni ID</th>
-										<th>First Name</th>
-										<th>Last Name</th>
-										<th>Gender</th>
-										<th>Phone No.</th>
-										<th>Trade Type</th>
-										<th>State</th>
-										<th>LGA</th>
-										<th>Action</th>
-									</tr>
-								</thead>
-								<tbody>
-
-									{ enumerators }
-
-
-								</tbody>
-							</table>
+							{ candidates }
 						</div>
-
 					</div>
 				</div>
 
@@ -307,12 +159,14 @@ class Batch extends React.Component {
 
 const mapStateToProps = state => {
 	return {
-
+		batch: state.batchesReducer.batch,
+		candidates: state.batchReducer.candidates
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
+		get_batch: (batchId) => dispatch(get_batch(batchId)),
 		openModal: (modalType, modalProp) => dispatch(openModal(modalType, modalProp))
 	}
 }

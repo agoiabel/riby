@@ -4,6 +4,7 @@ select {
     appearance: none;
 }
 .formGroup {
+	display: flex;
 	margin-bottom: 15px;
 }
 .formControl {
@@ -12,4 +13,7 @@ select {
 	width: 100%;
 	font-size: 15px;
 	border-radius: 5px;
+}
+.formControlError {
+	border: 1px solid red;
 }

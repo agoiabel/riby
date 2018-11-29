@@ -2,78 +2,23 @@ import React from 'react';
 import swal from 'sweetalert2';
 import {connect} from 'react-redux';
 import { Link } from 'react-router-dom'; 
-import validate from '../../utils/validation';
 import styles from './ResetPassword.page.module.css';
-import CustomInput from '../../components/CustomInput';
-import CustomButton from '../../components/CustomButton';
+import ResetPasswordForm from '../../components/Forms/ResetPasswordForm';
+
 
 class ResetPassword extends React.Component {
 
 	state = {
-		showLoading: false,
-		formIsValid: false,
-		formControls: {
-			password: {
-				value: "",
-				valid: false,
-				validationRules: {
-					isRequired: true
-				},
-				placeholderText: "Password",
-				touched: false,
-			},
-			password_confirmation: {
-				value: "",
-				valid: false,
-				validationRules: {
-					isRequired: true
-				},
-				placeholderText: "Confirm Password",
-				touched: false,
-			}
-		}
+		submittingForm: false,
 	};
 
-	inputChangeHandler = event => {
-
-		const name = event.target.name;
-		const value = (event.target.type === 'file') ? event.target.files[0] : event.target.value;
-
-		const updatedControls = {
-			...this.state.formControls
-		};
-		const updatedFormElement = {
-			...updatedControls[name]
-		};
-		updatedFormElement.value = value;
-		updatedFormElement.touched = true;
-		updatedFormElement.valid = validate(value, updatedFormElement.validationRules);
-
-		updatedControls[name] = updatedFormElement;
 
 
-		let formIsValid = true;
-		for (let inputIdentifier in updatedControls) {
-			formIsValid = updatedControls[inputIdentifier].valid && formIsValid;
-		}
-
+	handleSubmit = value => {
+		console.dir(value);
 		this.setState({
-			formControls: updatedControls,
-			formIsValid: formIsValid
+			submitIsLoading: true
 		});
-	}
-
-
-	submitFormHandler = () => {
-		const formData = {};
-		for (let formElementId in this.state.formControls) {
-			formData[formElementId] = this.state.formControls[formElementId].value;
-		}
-		this.setState({
-			showLoading: true
-		});
-
-		this.props.start_login(formData);
 	}
 
 
@@ -126,17 +71,11 @@ class ResetPassword extends React.Component {
 
 
 					<div className={styles.body}>
-						<CustomInput name="password" type="password" onChange={this.inputChangeHandler} placeholder="Password" />
-
-						<CustomInput name="password_confirmation" type="password" onChange={this.inputChangeHandler} placeholder="Confirm Password" />
-
-						<CustomButton onClick={this.submitFormHandler}>send</CustomButton>
+						<ResetPasswordForm onSubmit={this.handleSubmit} submittingForm={this.state.submittingForm} />
+						
 						<Link to={{ pathname: '/' }} className={styles.forgotPassword}>login</Link>
 					</div>
 				</div>	
-
-
-
 			</div>
 		)
 	}

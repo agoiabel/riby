@@ -89,8 +89,11 @@
     .content {
         width: 100%;
     }
+    .stats {
+
+    }
     .stat {
-        width: 4%;
+        width: 100%;
     }
    
 }

@@ -2,94 +2,50 @@ import React from 'react';
 import swal from 'sweetalert2';
 import {connect} from 'react-redux';
 import { Link } from 'react-router-dom'; 
-import validate from '../../utils/validation';
-// import { start_login } from './Auth.page.action';
 import styles from './ForgotPassword.page.module.css';
-import CustomInput from '../../components/CustomInput';
-import CustomButton from '../../components/CustomButton';
+import { start_forgot_password } from './ForgotPassword.page.action';
+import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm';
 
-class Auth extends React.Component {
+class ForgotPassword extends React.Component {
 
 	state = {
-		showLoading: false,
-		formIsValid: false,
-		formControls: {
-			email: {
-				value: "",
-				valid: false,
-				validationRules: {
-					isEmail: true,
-					isRequired: true
-				},
-				placeholderText: "Email Address",
-				touched: false,
-			}
-		}
+		submittingForm: false,
 	};
 
-	inputChangeHandler = event => {
 
-		const name = event.target.name;
-		const value = (event.target.type === 'file') ? event.target.files[0] : event.target.value;
-
-		const updatedControls = {
-			...this.state.formControls
-		};
-		const updatedFormElement = {
-			...updatedControls[name]
-		};
-		updatedFormElement.value = value;
-		updatedFormElement.touched = true;
-		updatedFormElement.valid = validate(value, updatedFormElement.validationRules);
-
-		updatedControls[name] = updatedFormElement;
-
-
-		let formIsValid = true;
-		for (let inputIdentifier in updatedControls) {
-			formIsValid = updatedControls[inputIdentifier].valid && formIsValid;
-		}
-
+	handleSubmit = formData => {
 		this.setState({
-			formControls: updatedControls,
-			formIsValid: formIsValid
-		});
-	}
-
-
-	submitFormHandler = () => {
-		const formData = {};
-		for (let formElementId in this.state.formControls) {
-			formData[formElementId] = this.state.formControls[formElementId].value;
-		}
-		this.setState({
-			showLoading: true
+			submittingForm: true
 		});
 
-		this.props.start_login(formData);
+		this.props.start_forgot_password(formData);
 	}
 
 
 	redirectOrNotifyOnStatusChange = nextProps => {
 		if (nextProps.status === 200) {
 			this.setState({
-				showLoading: false
+				submittingForm: false
 			});
 
-			console.dir('can relocate to dashboard');
-		}
-		if ((nextProps.status === 422) && !(nextProps.message === this.props.message)) {
-			this.setState({
-				showLoading: false
-			});
 			return swal({
-				title: 'Error!',
+				title: 'Success!',
 				text: `${nextProps.message}`,
-				type: 'error',
+				type: 'success',
 				timer: 2500,
 				showConfirmButton: true
-			});
+			});			
 		}
+		this.setState({
+			submittingForm: false
+		});
+		return swal({
+			title: 'Error!',
+			text: `${nextProps.message}`,
+			type: 'error',
+			timer: 2500,
+			showConfirmButton: true
+		});
 	}
 
 
@@ -101,6 +57,7 @@ class Auth extends React.Component {
 	render() {
 		return (
 			<div className={styles.container}>
+
 				<ul className="cbSlideshow">
 					<li><span>Image 01</span></li>
 					<li><span>Image 02</span></li>
@@ -117,16 +74,11 @@ class Auth extends React.Component {
 						<div className={styles.description}>All fields are required</div>
 					</div>
 
-
 					<div className={styles.body}>
-						<CustomInput name="email" type="email" onChange={this.inputChangeHandler} placeholder="Email Address" />
-
-						<CustomButton onClick={this.submitFormHandler}>send</CustomButton>
+						<ForgotPasswordForm onSubmit={this.handleSubmit} submittingForm={this.state.submittingForm}/>
 						<Link to={{ pathname: '/' }} className={styles.forgotPassword}>login</Link>
 					</div>
-				</div>	
-
-
+				</div>
 
 			</div>
 		)
@@ -135,15 +87,15 @@ class Auth extends React.Component {
 
 const mapStateToProps = state => {
 	return {
-		status: state.authReducer.status,
-		message: state.authReducer.message
+		status: state.forgotPasswordReducer.status,
+		message: state.forgotPasswordReducer.message
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		// start_login: credentials => dispatch(start_login(credentials)),
+		start_forgot_password: credentials => dispatch(start_forgot_password(credentials)),
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

@@ -1,10 +1,7 @@
 .formGroup {
 	margin-bottom: 25px;
-	display: flex;
-	justify-content: space-between;
+	display: block;
 	width: 100%;
-
-	/* position: relative; */
 }
 .formControl {
 	padding: 20px 20px;
@@ -14,16 +11,13 @@
 	color: #464a4c;
 	border: 1px solid #cecece;
 }
-.formError {
-	border: 1px solid red;
+.formControlValid {
+	border: 1px solid #5CB85C;
 }
-
-.hint {
-	/* position: absolute;
-	padding: 25px 25px;
-	border: 1px solid green;
-	border-radius: 10px;
- */
-	/* right: -50%;
-	bottom: -12px; */
+.formControlError {
+	border: 1px solid #d9534f;
+}
+.errorText {
+	color: #d9534f;
+	margin-top: 10px;
 }

@@ -5,17 +5,17 @@ const DisplayStatus = ({status}) => {
 
 	let statusContainer;
 
-	if (status === 1) {
+	if (status == "-1") {
 		statusContainer = (
 			<div className={styles.rejected}>REJECTED</div>
 		);
 	}
-	if (status === 2) {
+	if (status == "0") {
 		statusContainer = (
 			<div className={styles.pending}>PENDING</div>
 		);
 	}
-	if (status === 3) {
+	if (status == "1") {
 		statusContainer = (
 			<div className={styles.approved}>APPROVED</div>
 		);

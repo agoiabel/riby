@@ -6,26 +6,26 @@ export const start_login = payload => {
     return async dispatch => {
 
         try {
-            let response = await post(JSON.stringify({
-                email: payload.email,
-                password: payload.password
-            }), 'authenticate/store');
+            let response = await post(payload, 'user/login');
 
             response = await response.json();
 
-            if (response.status === 422) {
+            if (response.status !== 200) {
                 return window.setTimeout((() => {
-                    dispatch(auth_unsucessful(response));
+                    const payload = {
+                        status: response.status,
+                        message: `${response.message} ${Date.now()}`
+                    }
+                    dispatch(auth_unsucessful(payload));
                 }));
             }
 
             try {
-                await setStorage("DSTest:auth_token", response.data.token);
+                await setStorage("RIBY:AUTH_USER_ID", response.data.id);
             } catch (error) {
-                alert('Error storing in storage');
+                console.dir('Error storing in storage');
             }
 
-            //pass the token to redux
             dispatch(auth_sucessful(response));
         } catch (error) {
             console.dir(error);

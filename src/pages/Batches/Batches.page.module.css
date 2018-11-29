@@ -41,12 +41,44 @@ tbody {
 tbody tr:nth-child(even) {
   background: #f0f0f2;
 }
+tbody tr:hover {
+  background: #f0f0f2;
+}
 td {
   border-bottom: 1px solid #cecfd5;
   border-right: 1px solid #cecfd5;
 }
 td:first-child {
   border-left: 1px solid #cecfd5;
+}
+
+
+.actionContainer {
+  position: relative;
+}
+.actions {
+  width: 170px;
+  background: #FFF;
+  padding: 5px 5px;
+  margin-bottom: 15px;
+
+  position: absolute;
+  z-index: 2;
+
+  top: 35px;
+  right: 75px;
+}
+.action {
+  display: flex;
+  padding: 15px 15px;
+  align-items: center;
+  cursor: pointer;
+}
+.action:hover {
+  background: #f0f0f2;
+}
+.actionIcon {
+  margin-right: 25px;
 }
 
 

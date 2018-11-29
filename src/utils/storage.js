@@ -10,6 +10,9 @@ export const getStorage = key => {
         catch (e) { return item }
     }
 
-    return window.localStorage.getItem(key).then(item => parseJson(item));
-    
+    return parseJson(window.localStorage.getItem(key));    
+}
+
+export const removeStorage = key => {
+    return window.localStorage.removeItem(key);
 }

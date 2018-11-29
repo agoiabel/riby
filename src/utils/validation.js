@@ -1,34 +1,14 @@
-const validate = (value, rules) => {
-	
-	let isValid = true;
-
-	for (let rule in rules) {
-		switch (rule) {
-			case 'isEmail': isValid = isValid && emailValidator(value); break;
-
-			case 'minLength': isValid = isValid && minLengthValidator(value, rules[rule]); break;
-
-			case 'maxLength': isValid = isValid && maxLengthValidator(value, rules[rule]); break;
-
-			case 'isRequired': isValid = isValid && requiredValidator(value); break;
-
-			default: isValid = true;
-		}
-	}
-
-	return isValid;
-}
-
 /**
  * Email validation
  * 
  * @param value
  * @return 
  */
-const emailValidator = value => {
-	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return re.test(String(value).toLowerCase());
+export const emailValidator = value => {
+	return value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ? 'Invalid email address' : undefined;
 }
+
+
 
 /**
  * minLength Val
@@ -36,29 +16,37 @@ const emailValidator = value => {
  * @param  minLength
  * @return          
  */
-const minLengthValidator = (value, minLength) => {
-	return value.length >= minLength;
+const minLengthValidator = length => {
+	return value => {
+		return value && value.length > length ? undefined : `Must be ${length} characters or more`;
+	}
 }
+export const minLength5 = minLengthValidator(5);
+
+
+
 
 /**
  * maxLength Val
  * @param  value 
  * @param  minLength
- * @return          
+ * @return
  */
-const maxLengthValidator = (value, maxLength) => {
-	return value.length <= maxLength;
+const maxLengthValidator = length => {
+	return value => {
+		return value && value.length > length ? `Must be ${length} characters or less` : undefined;
+	}
 }
+export const maxLength8 = maxLengthValidator(8);
+
 
 /**
- * Check to confirm that feild is required
+ * Check to confirm that field is required
  * 
  * @param  value 
  * @return       
  */
-const requiredValidator = value => {
-	return value.trim() !== '';	
-}
+export const requiredValidator = value => value ? undefined : 'Value is required';
 
 
-export default validate;
+export const matchesPassword = (value, allValues) => value === allValues.password ? undefined : 'Passwords must match';

@@ -1,34 +1,41 @@
 import { updateObject } from '../../utils/updateObject';
-import { AUTH_SUCCESSFUL, AUTH_UNSUCCESSFUL } from './index';
+import { STORE_BATCH, GET_BATCHES_SUCCESSFUL, GET_BATCHES_UNSUCCESSFUL } from './index';
 
 
-const authWasSuccessFul = (state, action) => {
+const getBatchesSuccessful = (state, action) => {
     return updateObject(state, {
-        user: action.payload.data,
+        batches: action.payload.data,
         status: action.payload.status,
         message: action.payload.message
     });
 }
 
 
-const authWasUnSuccessFul = (state, action) => {
+const getBatchesUnsuccessful = (state, action) => {
     return updateObject(state, {
         status: action.payload.status,
         message: action.payload.message,
     });
 }
 
+const storeBatch = (state, action) => {
+    return updateObject(state, {
+        batch: action.payload
+    });
+}
 
 const initialState = {
     status: null,
-    user: null,
+    batches: [],
     message: null,
+    batch: null,
 };
 
 const reducer = (state = initialState, action) => {
     const lookup = {
-        AUTH_SUCCESSFUL: authWasSuccessFul,
-        AUTH_UNSUCCESSFUL: authWasUnSuccessFul
+        GET_BATCHES_SUCCESSFUL: getBatchesSuccessful,
+        GET_BATCHES_UNSUCCESSFUL: getBatchesUnsuccessful,
+        STORE_BATCH: storeBatch
     }
 
     return lookup[action.type] ? lookup[action.type](state, action) : state;

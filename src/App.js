@@ -8,6 +8,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import {Route, Switch, Redirect} from 'react-router-dom';
 import ModalManager from './components/Modal/ModalManager.component';
 
+import RequiresAuth from './components/RequiresAuth';
+
 class App extends React.Component {
   render() {
     return (
@@ -17,9 +19,9 @@ class App extends React.Component {
 
         <Switch>
           <Route path="/" exact component={Auth} />
-          <Route path="/batches" exact component={Batches} />
-          <Route path="/dashboard" exact component={Dashboard} />
-          <Route path="/batch/:batchId" exact component={Batch} />
+          <Route path="/batches" exact component={RequiresAuth(Batches)} />
+          <Route path="/dashboard" exact component={RequiresAuth(Dashboard)} />
+          <Route path="/batch/:batchId" exact component={RequiresAuth(Batch)} />
           <Route path="/resetPassword" exact component={ResetPassword} />
           <Route path="/forgotPassword" exact component={ForgotPassword} />          
           <Redirect to="/" />

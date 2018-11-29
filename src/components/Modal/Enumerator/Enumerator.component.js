@@ -14,18 +14,27 @@ class Enumerator extends React.Component {
 
 
     rejectHandler = event => {
+        event.preventDefault();
+
+        this.updateState();
+    }
+
+    submitReject = event => {
+        console.dir('submit reject');
+    }
+
+    updateState = () => {
         this.setState(prevState => ({
             reject: !prevState.reject
         }));
     }
-
 
     render() {
 
         let content = (
             <div>
                 <div className={styles.goBack} onClick={this.props.closeModal}>
-                    <i class="fa fa-close" aria-hidden="true"></i>  Close
+                    <i className="fa fa-close" aria-hidden="true"></i>  Close
                 </div>
 
                 <div className={styles.enumerator}>
@@ -92,17 +101,17 @@ class Enumerator extends React.Component {
                 <div>
                     <div className={styles.action}>
                         <div className={styles.goBack} onClick={this.rejectHandler}>
-                            <div><i class="fa fa-arrow-left" aria-hidden="true"></i>  Go Back </div>
+                            <div><i className="fa fa-arrow-left" aria-hidden="true"></i>  Go Back </div>
                         </div>
                         <div className={styles.goBack} onClick={this.props.closeModal}>
-                            <i class="fa fa-close" aria-hidden="true"></i>  Close
+                            <i className="fa fa-close" aria-hidden="true"></i>  Close
                         </div>
                     </div>
 
-                    <CustomInput placeholder="REJECTION MESSAGE" />
+                    {/* <CustomInput placeholder="REJECTION MESSAGE" /> */}
 
                     <div className={styles.makeDecision}>
-                        <CustomButton onClick={this.rejectHandler}> SUBMIT REJECTION </CustomButton>
+                        <CustomButton onClick={this.submitReject}> SUBMIT REJECTION </CustomButton>
                     </div>
                 </div>
             );
@@ -118,6 +127,7 @@ class Enumerator extends React.Component {
                 </div>
             </div>
         );
+        
     }    
 }
 

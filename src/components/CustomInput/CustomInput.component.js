@@ -1,28 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styles from './CustomInput.component.module.css';
 
 const CustomInput = props => {
 
-	let className = [styles.formControl]
-	let hint = null;
+	const { input, meta, type, label, placeholder } = props;
 
-	if (props.valid === "false" && props.touched === "true") {
-		className.push(styles.formError);
-	}
+	const inputError = (meta.invalid && meta.touched) ? styles.formControlError : '';
+	const inputValid = (meta.valid && meta.touched) ? styles.formControlValid : '';
+
+	const classes = `${styles.formControl} ${inputError} ${inputValid}`;
 
 	return (
-	    <div className={styles.formGroup}>
-			<input className={className.join(' ')} {...props} />
-	    </div>
+		<div className={styles.formGroup}>
+			<label>{label}</label>
+			<input {...input} type={type} placeholder={placeholder} className={classes} />
 
-
+			{
+				(meta.error && meta.touched) && (
+					<div className={styles.errorText}>{meta.error}</div>
+				)
+			}
+		</div>
 	);
 
 }
 
-CustomInput.propTypes = {
-	onChange: PropTypes.func.isRequired
-}
 
 export default CustomInput;

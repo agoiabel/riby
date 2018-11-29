@@ -1,17 +1,16 @@
 import { updateObject } from '../../utils/updateObject';
-import { AUTH_SUCCESSFUL, AUTH_UNSUCCESSFUL } from './index';
+import { FORGOT_PASSWORD_SUCCESSFUL, FORGOT_PASSWORD_UNSUCCESSFUL } from './index';
 
 
-const authWasSuccessFul = (state, action) => {
+const forgotPasswordWasSuccessFul = (state, action) => {
     return updateObject(state, {
-        user: action.payload.data,
         status: action.payload.status,
         message: action.payload.message
     });
 }
 
 
-const authWasUnSuccessFul = (state, action) => {
+const forgotPasswordWasUnSuccessFul = (state, action) => {
     return updateObject(state, {
         status: action.payload.status,
         message: action.payload.message,
@@ -21,14 +20,13 @@ const authWasUnSuccessFul = (state, action) => {
 
 const initialState = {
     status: null,
-    user: null,
     message: null,
 };
 
 const reducer = (state = initialState, action) => {
     const lookup = {
-        AUTH_SUCCESSFUL: authWasSuccessFul,
-        AUTH_UNSUCCESSFUL: authWasUnSuccessFul
+        FORGOT_PASSWORD_SUCCESSFUL: forgotPasswordWasSuccessFul,
+        FORGOT_PASSWORD_UNSUCCESSFUL: forgotPasswordWasUnSuccessFul
     }
 
     return lookup[action.type] ? lookup[action.type](state, action) : state;
