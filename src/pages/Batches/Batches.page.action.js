@@ -11,22 +11,19 @@ export const get_batches = () => async dispatch => {
 
         if (response.status !== 200) {
             return window.setTimeout((() => {
-                dispatch(get_batches_unsucessful());
+                dispatch(get_batches_unsuccessful());
             }));
         }
 
-        dispatch(get_batches_sucessful(response));
+        dispatch(get_batches_successful(response));
     } catch (error) {
         console.dir(error);
-        // if (error = ) {
-
-        // }
     }
-
 
 };
 
-export const get_batches_sucessful = payload => {
+
+export const get_batches_successful = payload => {
     return {
         type: GET_BATCHES_SUCCESSFUL,
         payload: payload
@@ -34,7 +31,7 @@ export const get_batches_sucessful = payload => {
 }
 
 
-export const get_batches_unsucessful = payload => {
+export const get_batches_unsuccessful = payload => {
     return {
         type: GET_BATCHES_UNSUCCESSFUL,
         payload: payload

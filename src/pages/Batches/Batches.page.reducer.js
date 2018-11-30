@@ -28,7 +28,7 @@ const initialState = {
     status: null,
     batches: [],
     message: null,
-    batch: null,
+    batch: null,    
 };
 
 const reducer = (state = initialState, action) => {

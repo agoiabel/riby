@@ -1,55 +1,106 @@
 import React from 'react';
+import swal from 'sweetalert2';
+import BatchData from './BatchData';
 import { connect } from 'react-redux';
-// import swal from '@sweetalert/with-react';
 import styles from './Batch.page.module.css';
-
 import Header from '../../components/Header';
+import Spinner from '../../components/Spinner';
 import Breadcrumb from '../../components/Breadcrumb';
 import CustomButton from '../../components/CustomButton';
-
-import { get_batch } from './Batch.page.action';
-
 import { ENUMERATOR } from '../../components/Modal/index';
 import { openModal } from '../../components/Modal/Modal.action';
+import { get_batch, reject_candidate, batch_verification, reset_candidate_status, reset_batch_update_status } from './Batch.page.action';
 
 
 class Batch extends React.Component {
 
-	startVerificationFor = batch => {
-		console.dir(batch);
+	state = {}
+	
+	startVerificationFor = () => {
+		swal({
+			title: `Are you sure you want to pass ${this.props.batch.batch_name}`,
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, Clean!'
+		}).then((result) => {
+			if (result.value) {
+				this.props.batch_verification({
+					batchId: this.props.batch.id,
+					status: 'Whitelisted',
+					comment: 'Batch is clean, nice job done'
+				});
+			}
+		});
 	}
 
 
 	componentDidMount() {
-		console.dir(this.props.batch);
-		this.props.get_batch(this.props.match.params.batchId);
+		this.props.batch === null ? this.props.history.push('/batches') : this.props.get_batch(this.props.match.params.batchId);
+	}
+
+	showActionFor = batch => {
+		this.setState({ showAction: this.state.showAction === batch.id ? null : batch.id });
 	}
 
 
-	makeDecisionOn = enumerator => {
-		
-		// window.scrollTop = 0;
+	showNotification = nextProps => {
+		if (nextProps.candidate_rejected_status === 200) {
+			swal({
+				type: 'success',
+				title: `${nextProps.candidate_rejected_message}`,
+				allowOutsideClick: false
+			}).then((result) => {
+				if (result.value) {
+					this.props.resetCandidateStatus();
+				}
+			});
+		}
+
+
+		if (nextProps.batch_updated_status === 200) {
+			swal({
+				type: 'success',
+				title: `${nextProps.batch_updated_message}`,
+				allowOutsideClick: false
+			}).then((result) => {
+				if (result.value) {
+					this.props.resetBatchUpdateStatus();
+					this.props.history.push('/batches');
+				}
+			});
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.showNotification(nextProps);
+	}
+
+
+	makeDecisionOn = candidate => {
 		window.scrollTo({
 			top: 0,
 			left: 0,
 			behavior: 'smooth'
 		});
 
-		this.props.openModal(ENUMERATOR, enumerator.id);
-		// swal({
-		// 	content: <Enumerator  />,
-		// 	buttons: false
-		// });
+		this.props.openModal(ENUMERATOR, {
+			candidate: candidate
+		});
 	}
+
+
+	/**	Handle the process of rejecting candidate */
+	handleRejectionCandidate = candidate => {
+		this.props.rejectCandidate(candidate);
+	}
+	
 
 	render() {
 
 
-		let candidates = (
-			<div className={styles.showLoading}>
-				Show Loading
-			</div>
-		);
+		let candidates = <Spinner message="Loading Batch Candidates " />
 
 
 		if (this.props.candidates.length) {
@@ -72,23 +123,14 @@ class Batch extends React.Component {
 					</thead>
 					<tbody>
 						{this.props.candidates.map(candidate => (
-
-							<tr key={candidate.id}>
-								<td>{candidate.id}</td>
-								<td>{candidate.trademoni_id}</td>
-								<td>{candidate.firstname}</td>
-								<td>{candidate.lastname}</td>
-								<td>{candidate.gender}</td>
-								<td>{candidate.phone}</td>
-								<td>{candidate.smile_reference}</td>
-								<td>{candidate.tradetype}</td>
-								<td>{candidate.state}</td>
-								<td>{candidate.lga}</td>
-								<td onClick={() => this.makeDecisionOn(candidate)}>
-									<i className="fa fa-folder" aria-hidden="true"></i>
-								</td>
-							</tr>
-
+							
+							<BatchData key={candidate.id} candidate={candidate}
+									   showAction={this.state.showAction === candidate.id} 
+									   showActionFor={this.showActionFor} 
+									   handleRejectionCandidate={this.handleRejectionCandidate} 
+									   makeDecisionOn={this.makeDecisionOn}
+							/>
+							
 						))}
 					</tbody>
 				</table>
@@ -116,7 +158,7 @@ class Batch extends React.Component {
 
 
 								<div className={styles.detail}>
-									<div className={styles.agent_name}>Agoi Abel</div>
+									<div className={styles.agent_name}>{this.props.candidates.length ? this.props.candidates[0].agent : ''}</div>
 								</div>
 
 
@@ -127,12 +169,12 @@ class Batch extends React.Component {
 									</div>
 								</div>
 
-								<CustomButton onClick={() => this.startVerificationFor(1)}> Pass batch </CustomButton>
+								<CustomButton onClick={this.startVerificationFor}> Pass batch </CustomButton>
 
 								<div className={styles.stats}>
 									<div className={styles.stat}>
 										<div className={styles.stat_title}>Agent State</div>
-										<div className={styles.stat_value}>Lagos</div>
+										<div className={styles.stat_value}>{this.props.candidates.length ? this.props.candidates[0].state : ''}</div>
 									</div>
 
 									<div className={styles.stat}>
@@ -160,14 +202,26 @@ class Batch extends React.Component {
 const mapStateToProps = state => {
 	return {
 		batch: state.batchesReducer.batch,
-		candidates: state.batchReducer.candidates
+		candidates: state.batchReducer.candidates,
+
+		batch_updated_status: state.batchReducer.batch_updated_status,
+		batch_updated_message: state.batchReducer.batch_updated_message,
+
+		candidate_rejected_status: state.batchReducer.candidate_rejected_status,
+		candidate_rejected_message: state.batchReducer.candidate_rejected_message,
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
 		get_batch: (batchId) => dispatch(get_batch(batchId)),
-		openModal: (modalType, modalProp) => dispatch(openModal(modalType, modalProp))
+		rejectCandidate: (candidate) => dispatch(reject_candidate(candidate)),
+
+		batch_verification: (payload) => dispatch(batch_verification(payload)),
+		openModal: (modalType, modalProp) => dispatch(openModal(modalType, modalProp)),
+
+		resetCandidateStatus: () => dispatch(reset_candidate_status()),
+		resetBatchUpdateStatus: () => dispatch(reset_batch_update_status())
 	}
 }
 

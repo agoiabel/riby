@@ -1,10 +1,14 @@
 import React from 'react';
+import swal from 'sweetalert2';
+import BatchData from './BatchData';
 import { connect } from 'react-redux';
 import Header from '../../components/Header';
+import Spinner from '../../components/Spinner';
 import styles from './Batches.page.module.css';
-import { get_batches, store_batch } from './Batches.page.action';
 import Breadcrumb from '../../components/Breadcrumb';
-import BatchData from './BatchData'
+import { get_batches, store_batch } from './Batches.page.action';
+import { batch_verification } from '../Batch/Batch.page.action';
+
 
 class Batches extends React.Component {
 
@@ -27,6 +31,26 @@ class Batches extends React.Component {
 	}
 
 
+	startVerificationFor = batch => {
+		swal({
+			title: `Are you sure you want to pass ${batch.batch_name}`,
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, Clean!'
+		}).then((result) => {
+			if (result.value) {
+				this.props.batch_verification({
+					batchId: batch.id,
+					status: 'Whitelisted',
+					comment: 'Batch is clean, nice job done'
+				});
+				// this.props.history.push('/batches');
+			}
+		});
+	}
+
 	render() {
 
 		//I have to deal with error while loading a batch, meaning status is null
@@ -34,11 +58,7 @@ class Batches extends React.Component {
 		//I have to deal with empty batches
 		//I have to deal with non empty batches
 
-		let batches = (
-			<div className={styles.showLoading}>
-				Show Loading
-			</div>
-		);
+		let batches = <Spinner message="Loading Batches" />
 
 
 		if (this.props.batches.length) {
@@ -64,6 +84,7 @@ class Batches extends React.Component {
 									   showAction={this.state.showAction === batch.id} 
 									   showActionFor={this.showActionFor} 
 									   navigateTo={this.navigateTo} 
+									   startVerificationFor={this.startVerificationFor}
 							/>
 
 						))};
@@ -103,7 +124,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		get_batches: () => dispatch(get_batches()),
-		store_batch: batch => dispatch(store_batch(batch)) 
+		store_batch: batch => dispatch(store_batch(batch)),
+		batch_verification: (payload) => dispatch(batch_verification(payload)),
 	}
 }
 

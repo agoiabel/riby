@@ -42,10 +42,6 @@
 .image_and_name {
 	display: flex;
 }
-.makeDecision {
-	margin-top: 15px;
-}
-
 .goBack {
 	margin-bottom: 25px;
 	cursor: pointer;

@@ -1,12 +1,13 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import CustomInput from '../../CustomInput';
-import CustomButton from '../../CustomButton';
-import styles from './Enumerator.component.module.css';
+import { connect } from 'react-redux';
 import { closeModal } from '../Modal.action';
+import CustomButton from '../../CustomButton';
+import RejectionForm from '../../Forms/RejectForm';
+import styles from './Enumerator.component.module.css';
+import { reset_candidate_status, reject_candidate } from '../../../pages/Batch/Batch.page.action';
+
 
 class Enumerator extends React.Component {
-
 
     state = {
         reject: false
@@ -19,8 +20,9 @@ class Enumerator extends React.Component {
         this.updateState();
     }
 
-    submitReject = event => {
-        console.dir('submit reject');
+    handleSubmit = formData => {
+        formData['candidate_id'] = this.props.candidate.id;
+        this.props.rejectCandidate(formData);
     }
 
     updateState = () => {
@@ -108,11 +110,7 @@ class Enumerator extends React.Component {
                         </div>
                     </div>
 
-                    {/* <CustomInput placeholder="REJECTION MESSAGE" /> */}
-
-                    <div className={styles.makeDecision}>
-                        <CustomButton onClick={this.submitReject}> SUBMIT REJECTION </CustomButton>
-                    </div>
+                    <RejectionForm onSubmit={this.handleSubmit} submittingForm={this.state.submittingForm} />
                 </div>
             );
         }
@@ -122,13 +120,13 @@ class Enumerator extends React.Component {
             <div className={styles.modal}>
                 <div className={styles.body}>
 
-                    { content }
+                    {content}
 
                 </div>
             </div>
         );
-        
-    }    
+
+    }
 }
 
 
@@ -138,7 +136,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        closeModal: () => dispatch(closeModal())
+        closeModal: () => dispatch(closeModal()),
+        resetCandidateStatus: () => dispatch(reset_candidate_status()),
+        rejectCandidate: (candidate) => dispatch(reject_candidate(candidate)),
     }
 }
 

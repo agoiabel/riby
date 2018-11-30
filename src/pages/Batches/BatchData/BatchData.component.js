@@ -13,6 +13,11 @@ class BatchData extends React.Component {
 		this.props.navigateTo(this.props.batch);
 	}
 
+	startVerificationFor = () => {
+		this.props.startVerificationFor(this.props.batch);	  
+	}
+	
+
 	render () {
 		let action = null;
 
@@ -22,7 +27,7 @@ class BatchData extends React.Component {
 					<div className={styles.action} onClick={this.navigateToBatch}>
 						<span className={styles.actionIcon}><i className="fa fa-file" aria-hidden="true"></i></span><span>View Batch</span>
 					</div>
-					<div className={styles.action}>
+					<div className={styles.action} onClick={this.startVerificationFor}>
 						<span className={styles.actionIcon}><i className="fa fa-check" aria-hidden="true"></i></span> <span>Pass Batch</span>
 					</div>
 				</div>
