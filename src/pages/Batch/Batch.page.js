@@ -8,7 +8,7 @@ import Spinner from '../../components/Spinner';
 import Breadcrumb from '../../components/Breadcrumb';
 import CustomButton from '../../components/CustomButton';
 import { ENUMERATOR } from '../../components/Modal/index';
-import { openModal } from '../../components/Modal/Modal.action';
+import { openModal, closeModal } from '../../components/Modal/Modal.action';
 import { get_batch, reject_candidate, batch_verification, reset_candidate_status, reset_batch_update_status } from './Batch.page.action';
 
 
@@ -31,6 +31,7 @@ class Batch extends React.Component {
 					status: 'Whitelisted',
 					comment: 'Batch is clean, nice job done'
 				});
+
 			}
 		});
 	}
@@ -54,6 +55,7 @@ class Batch extends React.Component {
 			}).then((result) => {
 				if (result.value) {
 					this.props.resetCandidateStatus();
+					this.props.closeModal();
 				}
 			});
 		}
@@ -221,7 +223,9 @@ const mapDispatchToProps = dispatch => {
 		openModal: (modalType, modalProp) => dispatch(openModal(modalType, modalProp)),
 
 		resetCandidateStatus: () => dispatch(reset_candidate_status()),
-		resetBatchUpdateStatus: () => dispatch(reset_batch_update_status())
+		resetBatchUpdateStatus: () => dispatch(reset_batch_update_status()),
+
+		closeModal: () => dispatch(closeModal()),
 	}
 }
 

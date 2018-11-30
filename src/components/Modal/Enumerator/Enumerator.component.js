@@ -1,4 +1,5 @@
 import React from 'react';
+import swal from 'sweetalert2';
 import { connect } from 'react-redux';
 import { closeModal } from '../Modal.action';
 import CustomButton from '../../CustomButton';
@@ -10,7 +11,8 @@ import { reset_candidate_status, reject_candidate } from '../../../pages/Batch/B
 class Enumerator extends React.Component {
 
     state = {
-        reject: false
+        reject: false,
+
     }
 
 
@@ -21,8 +23,8 @@ class Enumerator extends React.Component {
     }
 
     handleSubmit = formData => {
-        formData['candidate_id'] = this.props.candidate.id;
-        this.props.rejectCandidate(formData);
+        // formData['candidate_id'] = this.props.candidate.id;
+        this.props.rejectCandidate(this.props.candidate);
     }
 
     updateState = () => {
@@ -30,6 +32,17 @@ class Enumerator extends React.Component {
             reject: !prevState.reject
         }));
     }
+
+
+    showNotification = nextProps => {
+        console.dir(nextProps);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.showNotification(nextProps);
+    }
+
+
 
     render() {
 
@@ -131,7 +144,10 @@ class Enumerator extends React.Component {
 
 
 const mapStateToProps = state => {
-    return {}
+    return {
+        candidate_rejected_status: state.batchReducer.candidate_rejected_status,
+        candidate_rejected_message: state.batchReducer.candidate_rejected_message,
+    }
 }
 
 const mapDispatchToProps = dispatch => {

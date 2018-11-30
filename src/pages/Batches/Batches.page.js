@@ -7,7 +7,7 @@ import Spinner from '../../components/Spinner';
 import styles from './Batches.page.module.css';
 import Breadcrumb from '../../components/Breadcrumb';
 import { get_batches, store_batch } from './Batches.page.action';
-import { batch_verification } from '../Batch/Batch.page.action';
+import { batch_verification, reset_batch_update_status } from '../Batch/Batch.page.action';
 
 
 class Batches extends React.Component {
@@ -23,7 +23,24 @@ class Batches extends React.Component {
 		this.props.get_batches();
 	}
 
-	componentWillReceiveProps(nextProps) { }
+	showNotification = nextProps => {
+		if (nextProps.batch_updated_status === 200) {
+			swal({
+				type: 'success',
+				title: `${nextProps.batch_updated_message}`,
+				allowOutsideClick: false
+			}).then((result) => {
+				if (result.value) {
+					this.props.resetBatchUpdateStatus();
+					// this.props.history.push('/batches');
+				}
+			});
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.showNotification(nextProps);
+	}
 
 
 	showActionFor = batch => {
@@ -117,7 +134,10 @@ class Batches extends React.Component {
 const mapStateToProps = state => {
 	return {
 		status: state.batchesReducer.status,
-		batches: state.batchesReducer.batches
+		batches: state.batchesReducer.batches,
+
+		batch_updated_status: state.batchReducer.batch_updated_status,
+		batch_updated_message: state.batchReducer.batch_updated_message,
 	}
 }
 
@@ -126,6 +146,7 @@ const mapDispatchToProps = dispatch => {
 		get_batches: () => dispatch(get_batches()),
 		store_batch: batch => dispatch(store_batch(batch)),
 		batch_verification: (payload) => dispatch(batch_verification(payload)),
+		resetBatchUpdateStatus: () => dispatch(reset_batch_update_status()),
 	}
 }
 
